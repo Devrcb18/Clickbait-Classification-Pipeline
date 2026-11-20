@@ -61,21 +61,19 @@ def load_params(path: str = "params.yaml") -> dict:
         return yaml.safe_load(f)
     
 # ---------------------- Dagshub and MLFLOW ----------------------------    
-# Optional: Initialize dagshub/mlflow if credentials available
-try:
-    dagshub.init(repo_owner="Devrcb18",repo_name="fraud-detection-project-",mlflow=True)
-    logger.info("dagshub initialized successfully")
-    MLFLOW_ENABLED = True
-except Exception as E:
-    logger.warning(f"dagshub initialization failed, continuing without MLflow: {E}")
-    MLFLOW_ENABLED = False
+# Disabled for local training - enable with env var if needed
+MLFLOW_ENABLED = False
 
 if MLFLOW_ENABLED:
-    print("MLflow Tracking URI:", mlflow.get_tracking_uri())
-    mlflow.set_experiment("clickbait-classification")
-    mlflow.autolog(disable=True)
-else:
-    mlflow = None
+    try:
+        dagshub.init(repo_owner="Devrcb18",repo_name="fraud-detection-project-",mlflow=True)
+        logger.info("dagshub initialized successfully")
+        print("MLflow Tracking URI:", mlflow.get_tracking_uri())
+        mlflow.set_experiment("clickbait-classification")
+        mlflow.autolog(disable=True)
+    except Exception as E:
+        logger.warning(f"dagshub initialization failed: {E}")
+        MLFLOW_ENABLED = False
 
 # ------------------------------ Hyperopt optimisation using TPE------------------    
 def objective_function(params):
@@ -110,6 +108,7 @@ def objective_function(params):
 #--------------------- Model Training and Tuning --------------------------    
 
 def main():
+    global best_params
     params = load_params("params.yaml")
     max_depth_upper_limit = params['model_building']['max_depth_upper_limit']
     max_depth_lower_limit = params['model_building']['max_depth_lower_limit']
@@ -136,7 +135,6 @@ def main():
                 max_evals=30,
                 show_progressbar=True
             )
-            global best_params
             best_params = {
                 'max_depth': int(best['max_depth']),
                 'learning_rate': float(best['learning_rate']),
@@ -166,7 +164,6 @@ def main():
             max_evals=30,
             show_progressbar=True
         )
-        global best_params
         best_params = {
             'max_depth': int(best['max_depth']),
             'learning_rate': float(best['learning_rate']),
