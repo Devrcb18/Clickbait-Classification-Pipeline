@@ -61,15 +61,21 @@ def load_params(path: str = "params.yaml") -> dict:
         return yaml.safe_load(f)
     
 # ---------------------- Dagshub and MLFLOW ----------------------------    
+# Optional: Initialize dagshub/mlflow if credentials available
 try:
     dagshub.init(repo_owner="Devrcb18",repo_name="fraud-detection-project-",mlflow=True)
     logger.info("dagshub initialized successfully")
+    MLFLOW_ENABLED = True
 except Exception as E:
-    logger.exception(f"dagshub initialization failed : {E}")
-    raise
-print("MLflow Tracking URI:", mlflow.get_tracking_uri())
-mlflow.set_experiment("clickbait-classification")
-mlflow.autolog(disable=True)
+    logger.warning(f"dagshub initialization failed, continuing without MLflow: {E}")
+    MLFLOW_ENABLED = False
+
+if MLFLOW_ENABLED:
+    print("MLflow Tracking URI:", mlflow.get_tracking_uri())
+    mlflow.set_experiment("clickbait-classification")
+    mlflow.autolog(disable=True)
+else:
+    mlflow = None
 
 # ------------------------------ Hyperopt optimisation using TPE------------------    
 def objective_function(params):
@@ -82,15 +88,23 @@ def objective_function(params):
         "random_state": 42,
         "use_label_encoder": False,
     }
-    with mlflow.start_run(nested=True):
+    if MLFLOW_ENABLED:
+        with mlflow.start_run(nested=True):
+            model = XGBClassifier(**model_params)
+            model.fit(x_train, y_train)
+            y_pred = model.predict(x_test)
+            acc = accuracy_score(y_test, y_pred)
+            f1  = f1_score(y_test, y_pred)
+            mlflow.log_params(model_params)
+            mlflow.log_metric("accuracy", acc)
+            mlflow.log_metric("f1_score", f1)
+            return {"loss": -acc,"status": STATUS_OK}
+    else:
         model = XGBClassifier(**model_params)
         model.fit(x_train, y_train)
         y_pred = model.predict(x_test)
         acc = accuracy_score(y_test, y_pred)
         f1  = f1_score(y_test, y_pred)
-        mlflow.log_params(model_params)
-        mlflow.log_metric("accuracy", acc)
-        mlflow.log_metric("f1_score", f1)
         return {"loss": -acc,"status": STATUS_OK}
     
 #--------------------- Model Training and Tuning --------------------------    
@@ -113,7 +127,38 @@ def main():
         'learning_rate': hp.loguniform('learning_rate',np.log(learning_rate_lower_limit),np.log(learning_rate_upper_limit)),
         'n_estimators': hp.choice('n_estimators',num_estimator_choices)
     }
-    with mlflow.start_run(run_name="Clickbait_XGBoost"):
+    if MLFLOW_ENABLED:
+        with mlflow.start_run(run_name="Clickbait_XGBoost"):
+            best = fmin(
+                fn=objective_function,
+                space=space,
+                algo=tpe.suggest,
+                max_evals=30,
+                show_progressbar=True
+            )
+            global best_params
+            best_params = {
+                'max_depth': int(best['max_depth']),
+                'learning_rate': float(best['learning_rate']),
+                'n_estimators': num_estimator_choices[best['n_estimators']],
+                'eval_metric': eval_metric,
+                'random_state': random_state
+            }
+            logger.info("Best hyperparameters: %s", best_params)
+            x_train, x_test, y_train, y_test = load_splits()
+            final_model = XGBClassifier(**best_params)
+            final_model.fit(x_train, y_train)
+            y_pred = final_model.predict(x_test)
+            final_acc = accuracy_score(y_test, y_pred)
+            final_f1 = f1_score(y_test, y_pred)
+            mlflow.log_params(best_params)
+            mlflow.log_metric("final_accuracy", final_acc)
+            mlflow.log_metric("final_f1", final_f1)
+            os.makedirs("models", exist_ok=True)
+            joblib.dump(final_model,"models/clickbait_xgb.joblib")
+            mlflow.log_artifact("models/clickbait_xgb.joblib")
+            logger.info("accuracy: %.4f | f1: %.4f",final_acc,final_f1)
+    else:
         best = fmin(
             fn=objective_function,
             space=space,
@@ -136,15 +181,14 @@ def main():
         y_pred = final_model.predict(x_test)
         final_acc = accuracy_score(y_test, y_pred)
         final_f1 = f1_score(y_test, y_pred)
-        mlflow.log_params(best_params)
-        mlflow.log_metric("final_accuracy", final_acc)
-        mlflow.log_metric("final_f1", final_f1)
         os.makedirs("models", exist_ok=True)
         joblib.dump(final_model,"models/clickbait_xgb.joblib")
-        mlflow.log_artifact("models/clickbait_xgb.joblib")
         logger.info("accuracy: %.4f | f1: %.4f",final_acc,final_f1)
     logger.info("Hyperopt optimization completed")
-    
+
+# Module-level variable for testing
+best_params = None
+
 if __name__== '__main__':
     main()    
     
