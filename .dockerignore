@@ -1,0 +1,17 @@
+.git
+.github
+.dvc
+.dvcignore
+.gitignore
+mlruns
+logs
+data
+data_files
+*.ipynb
+__pycache__
+*.pyc
+.venv
+venv
+Dockerfile
+.dockerignore
+README.md
