@@ -30,6 +30,7 @@ jobs:
           pip install -r requirements.txt
       - name: Train model
         run: python src/data/ingestion.py
+      - name: Model   
         run: python -m src.models.model_building
       
       - name: Run tests
