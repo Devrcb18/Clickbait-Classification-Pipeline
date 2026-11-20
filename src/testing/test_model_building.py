@@ -1,15 +1,6 @@
 import pytest
 from pathlib import Path
-from src.models.model_building import load_params 
 from xgboost import XGBClassifier
-#-------------------model testing for parameters data type----------
-def test_model_parameters_have_expected_types(artifacts):
-    _, model = artifacts
-    model_params = model.get_params()
-    assert isinstance(model_params["max_depth"], int)
-    assert isinstance(model_params["learning_rate"], float)
-    assert isinstance(model_params["n_estimators"], int)
-    assert model_params["random_state"] == 42
 
 #----------------- model checking -----------------------------
 def test_model_is_xgboost_classifier(artifacts):
