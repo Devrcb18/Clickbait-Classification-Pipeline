@@ -17,3 +17,13 @@ def params(root)-> dict:
 @pytest.fixture(scope="session")
 def raw_data(root)-> pd.DataFrame:
     return pd.read_csv(root / "data_files" / "raw" / "clickbait_title_classification.csv")
+@pytest.fixture(scope="session")
+def artifacts(root):
+    import joblib
+    from scipy.sparse import load_npz
+    import numpy as np
+    
+    model = joblib.load(root / "models" / "clickbait_xgb.joblib")
+    x_test = load_npz(root / "data_files" / "processed" / "x_test.npz")
+    y_test = np.load(root / "data_files" / "processed" / "y_test.npy")
+    return (x_test, y_test), model
