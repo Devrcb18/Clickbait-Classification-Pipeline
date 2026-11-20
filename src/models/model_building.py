@@ -40,6 +40,7 @@ file_handler.setFormatter(formatter)
 
 logger.addHandler(console_handler)
 logger.addHandler(file_handler)
+best_params = None
 #------------------------- Processed Data Loading-------------------------
 def load_splits():
   try:
@@ -120,6 +121,7 @@ def main():
             max_evals=30,
             show_progressbar=True
         )
+        global best_params
         best_params = {
             'max_depth': int(best['max_depth']),
             'learning_rate': float(best['learning_rate']),

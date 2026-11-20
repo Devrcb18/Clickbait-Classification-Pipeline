@@ -1,7 +1,7 @@
 import pytest
 from pathlib import Path
-from  models.model_building import best_params
-
+from src.models.model_building import load_params 
+from xgboost import XGBClassifier
 #-------------------model testing for parameters data type----------
 def test_model_parameters_have_expected_types(artifacts):
     _, model = artifacts
