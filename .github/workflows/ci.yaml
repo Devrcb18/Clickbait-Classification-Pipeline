@@ -30,7 +30,7 @@ jobs:
           pip install dvc
 
       - name: Pull data with DVC
-        run: dvc pull
+        run: dvc pull --force
 
       - name: Train model
         run: python src/data/ingestion.py
