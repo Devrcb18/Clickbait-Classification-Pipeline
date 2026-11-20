@@ -242,3 +242,7 @@ FileNotFoundError: [Errno 2] No such file or directory: 'models/tfidf_vectorizer
 2026-11-09 22:50:18,159 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
 2026-11-09 22:50:28,258 - data_ingestion - INFO - accuracy: 0.8959 | f1: 0.8900
 2026-11-09 22:50:29,219 - data_ingestion - INFO - Hyperopt optimization completed
+2026-11-20 22:12:46,269 - data_ingestion - INFO - dagshub initialized successfully
+2026-11-20 22:12:47,541 - data_ingestion - INFO - Hyperopt optimization starting
+2026-11-20 22:12:50,532 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:12:58,646 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
