@@ -27,16 +27,12 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install dvc
 
-      - name: Pull data with DVC
-        run: dvc pull --force
+      - name: Run data ingestion
+        run: python src/data/ingestion.py
 
       - name: Train model
-        run: python src/data/ingestion.py
-      - name: Model   
         run: python -m src.models.model_building
        
       - name: Run tests
-        run: |
-          python -m pytest -v src/testing/
+        run: python -m pytest -v src/testing/
