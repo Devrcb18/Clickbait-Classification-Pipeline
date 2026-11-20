@@ -5,7 +5,6 @@ on:
     branches:
       - master
       - main
-
   pull_request:
     branches:
       - master
@@ -28,11 +27,16 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install dvc
+
+      - name: Pull data with DVC
+        run: dvc pull
+
       - name: Train model
         run: python src/data/ingestion.py
       - name: Model   
         run: python -m src.models.model_building
-      
+       
       - name: Run tests
         run: |
           python -m pytest -v src/testing/
