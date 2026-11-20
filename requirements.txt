@@ -6,3 +6,9 @@ xgboost==3.1.2
 joblib==1.5.2
 PyYAML==6.0
 pytest
+mlflow
+dagshub
+hyperopt
+scipy
+matplotlib
+seaborn
