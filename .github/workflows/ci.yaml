@@ -29,8 +29,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Train model
+        run: python src/data/ingestion.py
         run: python -m src.models.model_building
-
+      
       - name: Run tests
         run: |
           python -m pytest -v src/testing/

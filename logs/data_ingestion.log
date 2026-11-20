@@ -284,3 +284,45 @@ FileNotFoundError: [Errno 2] No such file or directory: 'models/tfidf_vectorizer
 2026-11-20 22:35:27,313 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
 2026-11-20 22:35:28,901 - data_ingestion - INFO - accuracy: 0.8992 | f1: 0.8927
 2026-11-20 22:35:28,901 - data_ingestion - INFO - Hyperopt optimization completed
+2026-11-20 22:46:38,429 - data_ingestion - DEBUG - Parameters loaded from params.yaml
+2026-11-20 22:46:38,513 - data_ingestion - DEBUG - Data loaded from data_files\raw\clickbait_title_classification.csv
+2026-11-20 22:46:38,513 - data_ingestion - DEBUG - Parameters loaded from params.yaml
+2026-11-20 22:46:38,606 - data_ingestion - DEBUG - Data split into train and test sets with test size 0.2
+2026-11-20 22:46:38,606 - data_ingestion - DEBUG - Parameters loaded from params.yaml
+2026-11-20 22:46:39,202 - data_ingestion - INFO - TF-IDF vectorizer trained and saved.
+2026-11-20 22:46:39,559 - data_ingestion - INFO - Processed artifacts saved successfully
+2026-11-20 22:47:09,331 - data_ingestion - INFO - Hyperopt optimization starting
+2026-11-20 22:47:09,369 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:12,307 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:13,462 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:14,820 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:16,725 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:17,145 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:17,815 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:18,374 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:18,667 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:19,412 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:20,090 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:20,411 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:20,585 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:21,167 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:21,401 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:21,661 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:22,100 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:22,263 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:23,467 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:23,905 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:24,293 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:26,117 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:27,731 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:28,730 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:29,868 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:31,344 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:32,791 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:33,662 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:34,712 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:36,107 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:37,935 - data_ingestion - INFO - Best hyperparameters: {'max_depth': 10, 'learning_rate': 0.2985258244382743, 'n_estimators': 10, 'eval_metric': 'logloss', 'random_state': 42}
+2026-11-20 22:47:37,965 - data_ingestion - DEBUG - the processed data is fetched from data_files/processed/
+2026-11-20 22:47:39,396 - data_ingestion - INFO - accuracy: 0.8986 | f1: 0.8932
+2026-11-20 22:47:39,396 - data_ingestion - INFO - Hyperopt optimization completed
